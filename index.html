@@ -1,0 +1,296 @@
+<html>
+<head>
+ <title>............</title>
+</head>
+
+<body>
+    <pre>
+        8085 Assembly Language Programs & Explanations
+1. Statement: Store the data byte 32H into memory location 4000H.
+Program 1:
+MVI A, 32H : Store 32H in the accumulator
+STA 4000H : Copy accumulator contents at address 4000H
+HLT : Terminate program execution
+Program 2:
+LXI H : Load HL with 4000H
+MVI M : Store 32H in memory location pointed by HL register pair
+(4000H)
+HLT : Terminate program execution
+
+
+2. Statement: Exchange the contents of memory locations 2000H and 4000H
+Program 1:
+LDA 2000H : Get the contents of memory location 2000H into
+accumulator
+MOV B, A : Save the contents into B register
+LDA 4000H : Get the contents of memory location 4000Hinto
+accumulator
+STA 2000H : Store the contents of accumulator at address 2000H
+MOV A, B : Get the saved contents back into A register
+STA 4000H : Store the contents of accumulator at address 4000H
+Program 2:
+LXI H 2000H : Initialize HL register pair as a pointer to
+memory location 2000H.
+LXI D 4000H : Initialize DE register pair as a pointer to
+memory location 4000H.
+MOV B, M : Get the contents of memory location 2000H into B
+register.
+LDAX D : Get the contents of memory location 4000H into A
+register.
+MOV M, A : Store the contents of A register into memory
+location 2000H.
+MOV A, B : Copy the contents of B register into accumulator.
+STAX D : Store the contents of A register into memory location
+4000H.
+HLT : Terminate program execution.
+https://E-next.in
+
+
+
+3.Sample problem
+(4000H) = 14H
+(4001H) = 89H
+Result = 14H + 89H = 9DH
+Source program
+LXI H 4000H : HL points 4000H
+MOV A, M : Get first operand
+INX H : HL points 4001H
+ADD M : Add second operand
+INX H : HL points 4002H
+MOV M, A : Store result at 4002H
+HLT : Terminate program execution
+
+
+
+4.Statement: Subtract the contents of memory location 4001H from the memory
+location 2000H and place the result in memory location 4002H.
+Program - 4: Subtract two 8-bit numbers
+Sample problem:
+(4000H) = 51H
+(4001H) = 19H
+Result = 51H - 19H = 38H
+Source program:
+LXI H, 4000H : HL points 4000H
+MOV A, M : Get first operand
+INX H : HL points 4001H
+SUB M : Subtract second operand
+INX H : HL points 4002H
+MOV M, A : Store result at 4002H.
+HLT : Terminate program execution
+
+
+5.Statement: Add the 16-bit number in memory locations 4000H and 4001H to
+the 16-bit number in memory locations 4002H and 4003H. The most significant
+eight bits of the two numbers to be added are in memory locations 4001H and
+4003H. Store the result in memory locations 4004H and 4005H with the most
+significant byte in memory location 4005H.
+https://E-next.in
+Program - 5.a: Add two 16-bit numbers - Source Program 1
+Sample problem:
+(4000H) = 15H
+(4001H) = 1CH
+(4002H) = B7H
+(4003H) = 5AH
+Result = 1C15 + 5AB7H = 76CCH
+(4004H) = CCH
+(4005H) = 76H
+Source Program 1:
+LHLD 4000H : Get first I6-bit number in HL
+XCHG : Save first I6-bit number in DE
+LHLD 4002H : Get second I6-bit number in HL
+MOV A, E : Get lower byte of the first number
+ADD L : Add lower byte of the second number
+MOV L, A : Store result in L register
+MOV A, D : Get higher byte of the first number
+ADC H : Add higher byte of the second number with CARRY
+MOV H, A : Store result in H register
+SHLD 4004H : Store I6-bit result in memory locations 4004H and
+4005H.
+HLT : Terminate program execution
+
+
+6.Statement: Add the contents of memory locations 40001H and 4001H and place
+the result in the memory locations 4002Hand 4003H.
+Sample problem:
+(4000H) = 7FH
+(400lH) = 89H
+Result = 7FH + 89H = lO8H
+(4002H) = 08H
+(4003H) = 0lH
+Source program:
+LXI H, 4000H :HL Points 4000H
+MOV A, M :Get first operand
+INX H :HL Points 4001H
+ADD M :Add second operand
+INX H :HL Points 4002H
+MOV M, A :Store the lower byte of result at 4002H
+MVIA, 00 :Initialize higher byte result with 00H
+https://E-next.in
+ADC A :Add carry in the high byte result
+INX H :HL Points 4003H
+MOV M, A :Store the higher byte of result at 4003H
+HLT :Terminate program execution
+
+
+
+7.Statement: Subtract the 16-bit number in memory locations 4002H and 4003H
+from the 16-bit number in memory locations 4000H and 4001H. The most
+significant eight bits of the two numbers are in memory locations 4001H and 4003H.
+Store the result in memory locations 4004H and 4005H with the most significant
+byte in memory location 4005H.
+Sample problem
+(4000H) = 19H
+(400IH) = 6AH
+(4004H) = I5H (4003H) = 5CH
+Result = 6A19H - 5C15H = OE04H
+(4004H) = 04H
+(4005H) = OEH
+Source program:
+LHLD 4000H : Get first 16-bit number in HL
+XCHG : Save first 16-bit number in DE
+LHLD 4002H : Get second 16-bit number in HL
+MOV A, E : Get lower byte of the first number
+SUB L : Subtract lower byte of the second number
+MOV L, A : Store the result in L register
+MOV A, D : Get higher byte of the first number
+SBB H : Subtract higher byte of second number with borrow
+MOV H, A : Store l6-bit result in memory locations 4004H and
+4005H.
+SHLD 4004H : Store l6-bit result in memory locations 4004H and
+4005H.
+HLT : Terminate program execution
+
+
+
+8.Statement: Find the l's complement of the number stored at memory location
+4400H and store the complemented number at memory location 4300H.
+Sample problem:
+(4400H) = 55H
+https://E-next.in
+Result = (4300B) = AAB
+Source program:
+LDA 4400B : Get the number
+CMA : Complement number
+STA 4300H : Store the result
+HLT : Terminate program execution
+
+
+9.Statement: Find the 2's complement of the number stored at memory location
+4200H and store the complemented number at memory location 4300H.
+Sample problem:
+(4200H) = 55H
+Result = (4300H) = AAH + 1 = ABH
+Source program:
+LDA 4200H : Get the number
+CMA : Complement the number
+ADI, 01 H : Add one in the number
+STA 4300H : Store the result
+HLT : Terminate program execution
+
+
+10.Statement: Pack the two unpacked BCD numbers stored in memory locations
+4200H and 4201H and store result in memory location 4300H. Assume the least
+significant digit is stored at 4200H.
+Sample problem:
+(4200H) = 04
+(4201H) = 09
+Result = (4300H) = 94
+Source program
+LDA 4201H : Get the Most significant BCD digit
+RLC
+RLC
+RLC
+RLC : Adjust the position of the second digit (09 is changed to
+90)
+https://E-next.in
+ANI FOH : Make least significant BCD digit zero
+MOV C, A : store the partial result
+LDA 4200H : Get the lower BCD digit
+ADD C : Add lower BCD digit
+STA 4300H : Store the result
+HLT : Terminate program execution
+
+
+11.Statement: Two digit BCD number is stored in memory location 4200H.
+Unpack the BCD number and store the two digits in memory locations 4300H and
+4301H such that memory location 4300H will have lower BCD digit.
+Sample problem
+(4200H) = 58
+Result = (4300H) = 08 and
+ (4301H) = 05
+Source program
+LDA 4200H : Get the packed BCD number
+ANI FOH : Mask lower nibble
+RRC
+RRC
+RRC
+RRC : Adjust higher BCD digit as a lower digit
+STA 4301H : Store the partial result
+LDA 4200H : .Get the original BCD number
+ANI OFH : Mask higher nibble
+STA 4201H : Store the result
+HLT : Terminate program execution
+
+
+12.Statement:Read the program given below and state the contents of all
+registers after the execution of each instruction in sequence.
+Main program:
+4000H LXI SP, 27FFH
+4003H LXI H, 2000H
+4006H LXI B, 1020H
+4009H CALL SUB
+400CH HLT
+https://E-next.in
+Subroutine program:
+4100H SUB: PUSH B
+4101H PUSH H
+4102H LXI B, 4080H
+4105H LXI H, 4090H
+4108H SHLD 2200H
+4109H DAD B
+410CH POP H
+410DH POP B
+410EH RET
+
+
+13.Statement:Write a program to shift an eight bit data four bits right. Assume
+that data is in register C.
+
+ Source program:
+MOV A, C
+RAR
+RAR
+RAR
+RAR
+MOV C, A
+HLT
+
+14.Statement: Program to shift a 16-bit data 1 bit left. Assume data is in the HL
+register pair
+Source program:
+DAD H : Adds HL data with HL data
+
+
+15.Statement: Write a set of instructions to alter the contents of flag register in
+8085.
+PUSH PSW : Save flags on stack
+POP H : Retrieve flags in 'L'
+MOV A, L : Flags in accumulator
+CMA : Complement accumulator
+MOV L, A : Accumulator in 'L'
+https://E-next.in
+PUSH H : Save on stack
+POP PSW : Back to flag register
+HLT :Terminate program execution
+
+
+
+
+
+
+
+
+
+    </pre>
+</body>
+</html>
